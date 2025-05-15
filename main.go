@@ -76,6 +76,18 @@ func TambahResume() {
 	fmt.Println("Resume berhasil dibuat!")
 }
 
+func TampilData() {
+	fmt.Println("\n======= DAFTAR RESUME =======")
+	for i := 0; i < jumlahData; i++ {
+		r := dataResume[i]
+		fmt.Printf("ID: %d\nNama: %s\nEmail: %s\nNo HP: %s\nPendidikan: %s\nPengalaman: %s\nKeahlian: %s\nSurat Lamaran:\n%s\n-----------------------------\n",
+			r.ID, r.Nama, r.Email, r.NomorHP, r.Pendidikan, r.Pengalaman, r.Keahlian, r.SuratLamaran)
+	}
+	if jumlahData == 0 {
+		fmt.Println("Belum ada data.")
+	}
+}
+
 func menu() {
 	fmt.Println("-----------------------")
 	fmt.Println("    AI RESUME & LAPORAN    ")
