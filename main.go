@@ -1,6 +1,11 @@
 package main
-
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 type Resume struct {
 	ID           int
@@ -93,22 +98,9 @@ func menu() {
 	fmt.Println("    AI RESUME & LAPORAN    ")
 	fmt.Println("-----------------------")
 	fmt.Println("1. Data Pengguna")
-	fmt.Println("2. Buat Resume")
-	fmt.Println("3. Buat Surat Lamaran")
-	fmt.Println("4. Exit")
+	fmt.Println("2. Tampilkan Resume & Surat Lamaran")
+	fmt.Println("3. Exit")
 	fmt.Println("-----------------------")
-
-}
-
-func InputDataPengguna() {
-
-}
-
-func BuatResume() {
-
-}
-
-func BuatSuratLamaran() {
 
 }
 
@@ -120,12 +112,10 @@ func main() {
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
-			InputDataPengguna()
+			TambahResume()
 		case 2:
-			BuatResume()
+			TampilData()
 		case 3:
-			BuatSuratLamaran()
-		case 4:
 			fmt.Println("Program berhenti, sampai jumpa lain waktu!")
 		default:
 			fmt.Println("Pilihan Tidak Valid, SIlakan Coba Lagi.")
