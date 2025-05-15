@@ -1,11 +1,13 @@
 package main
+
 import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 )
+
+const MAX = 100
 
 type Resume struct {
 	ID           int
@@ -17,6 +19,9 @@ type Resume struct {
 	Keahlian     string
 	SuratLamaran string
 }
+
+var dataResume [MAX]Resume
+var jumlahData int
 
 func GenerateSuratTemplate(nama, posisi, keahlian string) string {
 	surat := fmt.Sprintf(`Yth. HRD %s,
@@ -95,7 +100,7 @@ func TampilData() {
 
 func menu() {
 	fmt.Println("-----------------------")
-	fmt.Println("    AI RESUME & LAPORAN    ")
+	fmt.Println(" AI RESUME & LAPORAN ")
 	fmt.Println("-----------------------")
 	fmt.Println("1. Data Pengguna")
 	fmt.Println("2. Tampilkan Resume & Surat Lamaran")
@@ -108,7 +113,7 @@ func main() {
 	var pilih int
 	for {
 		menu()
-		fmt.Print("Pilih (1/2/3/4)? ")
+		fmt.Print("Pilih (1/2/3)? ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -116,11 +121,13 @@ func main() {
 		case 2:
 			TampilData()
 		case 3:
-			fmt.Println("Program berhenti, sampai jumpa lain waktu!")
+			fmt.Println("Program berhenti, semoga sukses dengan lamarannya!")
 		default:
 			fmt.Println("Pilihan Tidak Valid, SIlakan Coba Lagi.")
 		}
 		fmt.Println()
+		if pilih == 3 {
+			break
+		}
 	}
 }
-
