@@ -4,10 +4,17 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 )
 
 const MAX = 100
+
+type user struct {
+	username string
+	password string
+}
 
 type Resume struct {
 	ID           int
@@ -21,7 +28,33 @@ type Resume struct {
 }
 
 var dataResume [MAX]Resume
+var users []user
 var jumlahData int
+var pilihan int
+
+func landingPage() {
+	clearScreen()
+	fmt.Println("-----------------------")
+	fmt.Println(" Aplikasi Dummy ")
+	fmt.Println("-----------------------")
+	fmt.Println("1. Register")
+	fmt.Println("2. Login")
+	fmt.Println("3. Exit")
+	fmt.Println("-----------------------")
+	fmt.Scan(&pilihan)
+
+	switch pilihan {
+	case 1:
+		register()
+	case 2:
+		login()
+	case 0:
+		fmt.Println("Keluar Aplikasi, terima kasih sudah mampir hehehe")
+	default:
+		fmt.Println("Masukan tidak valid, mohon input sesuai nomor")
+		landingPage()
+	}
+}
 
 func GenerateSuratTemplate(nama, posisi, keahlian string) string {
 	surat := fmt.Sprintf(`Yth. HRD %s,
@@ -39,6 +72,29 @@ Hormat saya,
 %s`, posisi, nama, posisi, keahlian, nama)
 
 	return surat
+}
+
+func register() {
+	clearScreen()
+	var Username, Password string
+
+	fmt.Println("-----------------------")
+	fmt.Println(" Register Dummy ")
+	fmt.Println("-----------------------")
+	fmt.Println(" Username: ")
+	fmt.Scan(&Username)
+	fmt.Println(" Password: ")
+	fmt.Scan(&Password)
+
+	for _, user := range user {
+		if user.username == Username {
+			fmt.Println("\n   username telah digunakan")
+			landingPage()
+			return
+		}
+	}
+	users = append(users, User{Username: username, Password: password})
+	fmt.Println("\n   Akun berhasil digunakan")
 }
 
 func TambahResume() {
@@ -130,4 +186,21 @@ func main() {
 			break
 		}
 	}
+}
+
+func clearScreen() {
+	/* IS: -
+	   FS: Mengosongkan layar.
+	*/
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/c", "cls")
+	} else if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+		cmd = exec.Command("clear")
+	} else {
+		fmt.Println("Platform tidak didukung.")
+		return
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
