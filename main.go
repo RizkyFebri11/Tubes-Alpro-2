@@ -56,6 +56,53 @@ func landingPage() {
 	}
 }
 
+func register() {
+	clearScreen()
+	var username, password string
+
+	fmt.Println("-----------------------")
+	fmt.Println(" Register Dummy ")
+	fmt.Println("-----------------------")
+	fmt.Print(" Username: ")
+	fmt.Scan(&username)
+	fmt.Print(" Password: ")
+	fmt.Scan(&password)
+
+	for _, user := range users {
+		if user.Username == username {
+			fmt.Println("\n   username telah digunakan")
+			landingPage()
+			return
+		}
+	}
+	users = append(users, User{Username: username, Password: password})
+	fmt.Println("\n   Akun berhasil didaftarkan")
+	landingPage()
+}
+
+func login() {
+	var inputUsn, inputPass string
+	clearScreen()
+	fmt.Println("-----------------------")
+	fmt.Println(" Login Dummy ")
+	fmt.Println("-----------------------")
+	fmt.Print(" Username: ")
+	fmt.Scan(&inputUsn)
+	fmt.Print(" Password: ")
+	fmt.Scan(&inputPass)
+
+	clearScreen()
+	for _, user := range users {
+		if user.Username == inputUsn && user.Password == inputPass {
+			fmt.Println("\n   ---- Selamat Datang", user.Username, "-----")
+			Menu()
+			return
+		}
+	}
+	fmt.Println("\n Username atau Password salah!")
+	landingPage()
+}
+
 func GenerateSuratTemplate(nama, posisi, keahlian string) string {
 	surat := fmt.Sprintf(`Yth. HRD %s,
 
@@ -74,28 +121,6 @@ Hormat saya,
 	return surat
 }
 
-func register() {
-	clearScreen()
-	var Username, Password string
-
-	fmt.Println("-----------------------")
-	fmt.Println(" Register Dummy ")
-	fmt.Println("-----------------------")
-	fmt.Println(" Username: ")
-	fmt.Scan(&Username)
-	fmt.Println(" Password: ")
-	fmt.Scan(&Password)
-
-	for _, user := range user {
-		if user.username == Username {
-			fmt.Println("\n   username telah digunakan")
-			landingPage()
-			return
-		}
-	}
-	users = append(users, User{Username: username, Password: password})
-	fmt.Println("\n   Akun berhasil digunakan")
-}
 
 func TambahResume() {
 	if jumlahData >= MAX {
