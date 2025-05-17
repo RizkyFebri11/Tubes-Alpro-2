@@ -1,5 +1,7 @@
 package main
 
+// Kode dibuat oleh Rizky Febriyanto dan Orlando Silas Davinci Kambu
+
 /*
 "math/rand" & "time" nanti dia buat random pick templatenya gituu
 "os/exec" & "runtime" sebagai fungsi dari clearscreen
