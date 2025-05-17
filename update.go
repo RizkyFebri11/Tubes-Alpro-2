@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -11,9 +10,9 @@ import (
 
 const MAX = 100
 
-type user struct {
-	username string
-	password string
+type User struct {
+	Username string
+	Password string
 }
 
 type Resume struct {
@@ -27,8 +26,8 @@ type Resume struct {
 	SuratLamaran string
 }
 
+var users []User
 var dataResume [MAX]Resume
-var users []user
 var jumlahData int
 var pilihan int
 
@@ -41,7 +40,7 @@ func landingPage() {
 	fmt.Println("2. Login")
 	fmt.Println("3. Exit")
 	fmt.Println("-----------------------")
-	fmt.Scan(&pilihan)
+	fmt.Scanln(&pilihan)
 
 	switch pilihan {
 	case 1:
@@ -56,6 +55,47 @@ func landingPage() {
 	}
 }
 
+func Menu() {
+	var pilihan string
+	for pilihan != "8" {
+		fmt.Println("\n========= MENU UTAMA =========")
+		fmt.Println("1. Tambah Resume & Surat Lamaran")
+		fmt.Println("2. Tampilkan Semua Data")
+		fmt.Println("3. Cari Data (Binary Search)")
+		fmt.Println("4. Edit Data")
+		fmt.Println("5. Hapus Data")
+		fmt.Println("6. Urutkan Data Ascending (Insertion Sort)")
+		fmt.Println("7. Urutkan Data Descending (Selection Sort)")
+		fmt.Println("8. Keluar")
+		fmt.Print("Pilih menu: ")
+		fmt.Scanln(&pilihan)
+		clearScreen()
+
+		switch pilihan {
+		case "1":
+			TambahResume()
+		case "2":
+			TampilData()
+		case "3":
+			CariData()
+		case "4":
+			EditData()
+		case "5":
+			HapusData()
+		case "6":
+			UrutkanDataAsc()
+			fmt.Println("Data berhasil diurutkan secara ascending.")
+		case "7":
+			UrutkanDataDesc()
+			fmt.Println("Data berhasil diurutkan secara descending.")
+		case "8":
+			fmt.Println("Terima kasih telah menggunakan aplikasi.")
+		default:
+			fmt.Println("Pilihan tidak valid. Coba lagi.")
+		}
+	}
+}
+
 func register() {
 	clearScreen()
 	var username, password string
@@ -64,9 +104,9 @@ func register() {
 	fmt.Println(" Register Dummy ")
 	fmt.Println("-----------------------")
 	fmt.Print(" Username: ")
-	fmt.Scan(&username)
+	fmt.Scanln(&username)
 	fmt.Print(" Password: ")
-	fmt.Scan(&password)
+	fmt.Scanln(&password)
 
 	for _, user := range users {
 		if user.Username == username {
@@ -87,9 +127,9 @@ func login() {
 	fmt.Println(" Login Dummy ")
 	fmt.Println("-----------------------")
 	fmt.Print(" Username: ")
-	fmt.Scan(&inputUsn)
+	fmt.Scanln(&inputUsn)
 	fmt.Print(" Password: ")
-	fmt.Scan(&inputPass)
+	fmt.Scanln(&inputPass)
 
 	clearScreen()
 	for _, user := range users {
@@ -121,7 +161,6 @@ Hormat saya,
 	return surat
 }
 
-
 func TambahResume() {
 	if jumlahData >= MAX {
 		fmt.Println("Data penuh, tidak bisa menambah resume baru.")
@@ -131,34 +170,21 @@ func TambahResume() {
 	var r Resume
 	r.ID = jumlahData + 1
 
-	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Nama: ")
-	r.Nama, _ = reader.ReadString('\n')
-	r.Nama = strings.TrimSpace(r.Nama)
-
+	fmt.Scanln(&r.Nama)
 	fmt.Print("Email: ")
-	r.Email, _ = reader.ReadString('\n')
-	r.Email = strings.TrimSpace(r.Email)
-
+	fmt.Scanln(&r.Email)
 	fmt.Print("Nomor HP: ")
-	r.NomorHP, _ = reader.ReadString('\n')
-	r.NomorHP = strings.TrimSpace(r.NomorHP)
-
+	fmt.Scanln(&r.NomorHP)
 	fmt.Print("Pendidikan: ")
-	r.Pendidikan, _ = reader.ReadString('\n')
-	r.Pendidikan = strings.TrimSpace(r.Pendidikan)
-
+	fmt.Scanln(&r.Pendidikan)
 	fmt.Print("Pengalaman: ")
-	r.Pengalaman, _ = reader.ReadString('\n')
-	r.Pengalaman = strings.TrimSpace(r.Pengalaman)
-
+	fmt.Scanln(&r.Pengalaman)
 	fmt.Print("Keahlian: ")
-	r.Keahlian, _ = reader.ReadString('\n')
-	r.Keahlian = strings.TrimSpace(r.Keahlian)
-
+	fmt.Scanln(&r.Keahlian)
 	fmt.Print("Posisi yang dilamar: ")
-	posisi, _ := reader.ReadString('\n')
-	posisi = strings.TrimSpace(posisi)
+	var posisi string
+	fmt.Scanln(&posisi)
 
 	r.SuratLamaran = GenerateSuratTemplate(r.Nama, posisi, r.Keahlian)
 
@@ -168,6 +194,7 @@ func TambahResume() {
 }
 
 func TampilData() {
+	clearScreen()
 	fmt.Println("\n======= DAFTAR RESUME =======")
 	for i := 0; i < jumlahData; i++ {
 		r := dataResume[i]
@@ -179,44 +206,137 @@ func TampilData() {
 	}
 }
 
-func menu() {
-	fmt.Println("-----------------------")
-	fmt.Println(" AI RESUME & LAPORAN ")
-	fmt.Println("-----------------------")
-	fmt.Println("1. Data Pengguna")
-	fmt.Println("2. Tampilkan Resume & Surat Lamaran")
-	fmt.Println("3. Exit")
-	fmt.Println("-----------------------")
-
+func BinarySearch(nama string) int {
+	clearScreen()
+	low, high := 0, jumlahData-1
+	for low <= high {
+		mid := (low + high) / 2
+		if strings.EqualFold(dataResume[mid].Nama, nama) {
+			return mid
+		} else if strings.ToLower(nama) < strings.ToLower(dataResume[mid].Nama) {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+	return -1
 }
 
-func main() {
-	var pilih int
-	for {
-		menu()
-		fmt.Print("Pilih (1/2/3)? ")
-		fmt.Scan(&pilih)
-		switch pilih {
-		case 1:
-			TambahResume()
-		case 2:
-			TampilData()
-		case 3:
-			fmt.Println("Program berhenti, semoga sukses dengan lamarannya!")
-		default:
-			fmt.Println("Pilihan Tidak Valid, SIlakan Coba Lagi.")
-		}
-		fmt.Println()
-		if pilih == 3 {
+func CariData() {
+	clearScreen()
+	UrutkanDataAsc()
+	var nama string
+	fmt.Print("Masukkan nama yang dicari: ")
+	fmt.Scanln(&nama)
+	indeks := BinarySearch(nama)
+
+	if indeks != -1 {
+		r := dataResume[indeks]
+		fmt.Printf("\nID: %d\nNama: %s\nEmail: %s\nNo HP: %s\nPendidikan: %s\nPengalaman: %s\nKeahlian: %s\nSurat Lamaran:\n%s\n",
+			r.ID, r.Nama, r.Email, r.NomorHP, r.Pendidikan, r.Pengalaman, r.Keahlian, r.SuratLamaran)
+	} else {
+		fmt.Println("Data tidak ditemukan.")
+	}
+}
+
+func EditData() {
+	clearScreen()
+	var id int
+	fmt.Print("Masukkan ID yang ingin diedit: ")
+	fmt.Scanln(&id)
+
+	indeks := -1
+	for i := 0; i < jumlahData; i++ {
+		if dataResume[i].ID == id {
+			indeks = i
 			break
+		}
+	}
+
+	if indeks == -1 {
+		fmt.Println("ID tidak ditemukan.")
+		return
+	}
+
+	fmt.Print("Nama baru: ")
+	fmt.Scanln(&dataResume[indeks].Nama)
+	fmt.Print("Email baru: ")
+	fmt.Scanln(&dataResume[indeks].Email)
+	fmt.Print("Nomor HP baru: ")
+	fmt.Scanln(&dataResume[indeks].NomorHP)
+	fmt.Print("Pendidikan baru: ")
+	fmt.Scanln(&dataResume[indeks].Pendidikan)
+	fmt.Print("Pengalaman baru: ")
+	fmt.Scanln(&dataResume[indeks].Pengalaman)
+	fmt.Print("Keahlian baru: ")
+	fmt.Scanln(&dataResume[indeks].Keahlian)
+	fmt.Print("Posisi yang dilamar: ")
+	var posisi string
+	fmt.Scanln(&posisi)
+
+	dataResume[indeks].SuratLamaran = GenerateSuratTemplate(dataResume[indeks].Nama, posisi, dataResume[indeks].Keahlian)
+	fmt.Println("Data berhasil diedit.")
+}
+
+func HapusData() {
+	clearScreen()
+	var id int
+	fmt.Print("Masukkan ID yang ingin dihapus: ")
+	fmt.Scanln(&id)
+
+	indeks := -1
+	for i := 0; i < jumlahData; i++ {
+		if dataResume[i].ID == id {
+			indeks = i
+			break
+		}
+	}
+
+	if indeks == -1 {
+		fmt.Println("ID tidak ditemukan.")
+		return
+	}
+
+	for i := indeks; i < jumlahData-1; i++ {
+		dataResume[i] = dataResume[i+1]
+	}
+	jumlahData--
+	fmt.Println("Data berhasil dihapus.")
+}
+
+func UrutkanDataAsc() {
+	clearScreen()
+	for i := 1; i < jumlahData; i++ {
+		temp := dataResume[i]
+		j := i - 1
+		for j >= 0 && strings.ToLower(dataResume[j].Nama) > strings.ToLower(temp.Nama) {
+			dataResume[j+1] = dataResume[j]
+			j--
+		}
+		dataResume[j+1] = temp
+	}
+}
+
+func UrutkanDataDesc() {
+	clearScreen()
+	for i := 0; i < jumlahData-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < jumlahData; j++ {
+			if strings.ToLower(dataResume[j].Nama) > strings.ToLower(dataResume[maxIdx].Nama) {
+				maxIdx = j
+			}
+		}
+		if maxIdx != i {
+			dataResume[i], dataResume[maxIdx] = dataResume[maxIdx], dataResume[i]
 		}
 	}
 }
 
+func main() {
+	landingPage()
+}
+
 func clearScreen() {
-	/* IS: -
-	   FS: Mengosongkan layar.
-	*/
 	var cmd *exec.Cmd
 	if runtime.GOOS == "windows" {
 		cmd = exec.Command("cmd", "/c", "cls")
