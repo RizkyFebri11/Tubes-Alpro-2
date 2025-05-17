@@ -48,7 +48,7 @@ func landingPage() {
 		register()
 	case 2:
 		login()
-	case 0:
+	case 3:
 		fmt.Println("Keluar Aplikasi, terima kasih sudah mampir hehehe")
 	default:
 		fmt.Println("Masukan tidak valid, mohon input sesuai nomor")
