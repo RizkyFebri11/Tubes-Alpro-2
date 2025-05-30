@@ -1,6 +1,6 @@
 package main
 
-// Kode dibuat oleh Rizky Febriyanto dan Orlando Silas Davinci Kambu
+// Kode dibuat oleh Rizky Febriyanto dan Orlando Silas Davinci Kambu IF-48-07
 
 /*
 "math/rand" & "time" nanti dia buat random pick templatenya gituu
