@@ -47,92 +47,126 @@ func main() {
 // landing page awal
 func landingPage() {
 	clearScreen()
-	fmt.Println("-----------------------")
-	fmt.Println(" Aplikasi Dummy ")
-	fmt.Println("-----------------------")
-	fmt.Println("1. Register")
-	fmt.Println("2. Login")
-	fmt.Println("3. Exit")
-	fmt.Println("-----------------------")
-	fmt.Scanln(&pilihan)
+	fmt.Println("---------------------------------")
+	fmt.Println(" Aplikasi Pembuat Resume & Lamaran ")
+	fmt.Println("---------------------------------")
+	fmt.Println("1. Daftar Akun Baru")
+	fmt.Println("2. Masuk ke Aplikasi")
+	fmt.Println("3. Keluar")
+	fmt.Println("---------------------------------")
+	fmt.Print("Pilih opsi: ")
 
-	switch pilihan {
+	var choice int
+	_, err := fmt.Scanln(&choice) // Menggunakan Scanln
+	if err != nil {
+		fmt.Println("Input tidak valid. Harap masukkan angka (1-3).")
+		pressEnterToContinue()
+		landingPage()
+		return
+	}
+
+	switch choice {
 	case 1:
 		register()
 	case 2:
 		login()
 	case 3:
-		fmt.Println("Keluar Aplikasi, terima kasih sudah mampir hehehe")
+		fmt.Println("Terima kasih sudah menggunakan aplikasi ini!")
 	default:
-		fmt.Println("Masukan tidak valid, mohon input sesuai nomor")
+		fmt.Println("Pilihan tidak ada. Silakan masukkan angka 1, 2, atau 3.")
+		pressEnterToContinue()
 		landingPage()
 	}
 }
 
-// main menu pengguna
-func Menu() {
-	var pilihan string
-	for pilihan != "8" {
+// main menu pengguna yang nantinya akan menjadi menu utama sebuah program
+func mainMenu() {
+	for {
+		clearScreen()
 		fmt.Println("\n========= MENU UTAMA =========")
 		fmt.Println("1. Tambah Resume & Surat Lamaran")
-		fmt.Println("2. Tampilkan Semua Data")
-		fmt.Println("3. Cari Data (Binary Search)")
-		fmt.Println("4. Edit Data")
-		fmt.Println("5. Hapus Data")
-		fmt.Println("6. Urutkan Data Ascending (Insertion Sort)")
-		fmt.Println("7. Urutkan Data Descending (Selection Sort)")
+		fmt.Println("2. Tampilkan Semua Resume")
+		fmt.Println("3. Cari Resume (Berdasarkan Nama)")
+		fmt.Println("4. Edit Data Resume")
+		fmt.Println("5. Hapus Data Resume")
+		fmt.Println("6. Urutkan Resume Menaik (A-Z)")
+		fmt.Println("7. Urutkan Resume Menurun (Z-A)")
 		fmt.Println("8. Keluar")
 		fmt.Print("Pilih menu: ")
-		fmt.Scanln(&pilihan)
-		clearScreen()
 
-		switch pilihan {
-		case "1":
-			TambahResume()
-		case "2":
-			TampilData()
-		case "3":
-			CariData()
-		case "4":
-			EditData()
-		case "5":
-			HapusData()
-		case "6":
-			UrutkanDataAsc()
-			fmt.Println("Data berhasil diurutkan secara ascending.")
-		case "7":
-			UrutkanDataDesc()
-			fmt.Println("Data berhasil diurutkan secara descending.")
-		case "8":
-			fmt.Println("Terima kasih telah menggunakan aplikasi.")
-		default:
-			fmt.Println("Pilihan tidak valid. Coba lagi.")
+		var choice string
+		_, err := fmt.Scanln(&choice) // Menggunakan Scanln untuk membaca pilihan
+		if err != nil {
+			fmt.Println("Input tidak valid. Silakan coba lagi.")
+			pressEnterToContinue()
+			continue
 		}
+
+		switch choice {
+		case "1":
+			tambahResume()
+		case "2":
+			tampilkanSemuaResume()
+		case "3":
+			cariResume()
+		case "4":
+			editResume()
+		case "5":
+			hapusResume()
+		case "6":
+			urutkanResumeAscending()
+			fmt.Println("\nData resume berhasil diurutkan secara menaik (A-Z) berdasarkan nama.")
+		case "7":
+			urutkanResumeDescending()
+			fmt.Println("\nData resume berhasil diurutkan secara menurun (Z-A) berdasarkan nama.")
+		case "8":
+			fmt.Println("Anda telah keluar dari menu utama.")
+			return
+		default:
+			fmt.Println("Pilihan tidak valid. Silakan coba lagi.")
+		}
+		pressEnterToContinue()
 	}
 }
 
-// fungsi register pengguna
+// fungsi register pengguna untuk tahap awal aplikasi
 func register() {
 	clearScreen()
 	var username, password string
 
 	fmt.Println("-----------------------")
-	fmt.Println(" Register Dummy ")
+	fmt.Println(" Daftar Akun Baru ")
 	fmt.Println("-----------------------")
-	fmt.Print(" Username: ")
+	fmt.Print("Masukkan Username: ")
 	fmt.Scanln(&username)
-	fmt.Print(" Password: ")
+	if username == "" {
+		fmt.Println("Username tidak boleh kosong.")
+		pressEnterToContinue()
+		register()
+		return
+	}
+
+	fmt.Print("Masukkan Password: ")
 	fmt.Scanln(&password)
+	if password == "" {
+		fmt.Println("Password tidak boleh kosong.")
+		pressEnterToContinue()
+		register()
+		return
+	}
 
 	for _, user := range users {
 		if user.Username == username {
-			fmt.Println("\n   username telah digunakan")
-			landingPage()
+			fmt.Println("\nUsername ini sudah dipakai. Silakan pilih username lain.")
+			pressEnterToContinue()
+			landingPage() // Kembali ke halaman utama
 			return
 		}
 	}
+
 	users = append(users, User{Username: username, Password: password})
-	fmt.Println("\n   Akun berhasil didaftarkan")
+	fmt.Println("\nAkun berhasil didaftarkan! Silakan login.")
+	pressEnterToContinue()
 	landingPage()
 }
 
@@ -141,22 +175,24 @@ func login() {
 	var inputUsn, inputPass string
 	clearScreen()
 	fmt.Println("-----------------------")
-	fmt.Println(" Login Dummy ")
+	fmt.Println(" Masuk Aplikasi ")
 	fmt.Println("-----------------------")
-	fmt.Print(" Username: ")
+	fmt.Print("Username: ")
 	fmt.Scanln(&inputUsn)
-	fmt.Print(" Password: ")
+	fmt.Print("Password: ")
 	fmt.Scanln(&inputPass)
 
 	clearScreen()
 	for _, user := range users {
 		if user.Username == inputUsn && user.Password == inputPass {
-			fmt.Println("\n   ---- Selamat Datang", user.Username, "-----")
-			Menu()
+			fmt.Printf("\n---- Selamat Datang, %s! -----\n", user.Username)
+			pressEnterToContinue()
+			mainMenu()
 			return
 		}
 	}
-	fmt.Println("\n Username atau Password salah!")
+	fmt.Println("\nUsername atau Password salah. Silakan coba lagi.")
+	pressEnterToContinue()
 	landingPage()
 }
 
@@ -445,4 +481,10 @@ func clearScreen() {
 	}
 	cmd.Stdout = os.Stdout
 	cmd.Run()
+}
+
+func pressEnterToContinue() {
+	fmt.Println("\nTekan ENTER untuk melanjutkan...")
+	var dummy string
+	fmt.Scanln(&dummy)
 }
