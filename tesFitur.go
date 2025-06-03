@@ -480,6 +480,98 @@ func urutkanResumeDescending() {
 	}
 }
 
+func generateSuratTemplate(namaPerusahaan, namaPelamar, posisi, keahlian string) string {
+	var templateList = [9]string{
+		`Yth. Bapak/Ibu HRD %s,
+
+Dengan hormat,
+
+Saya yang bertanda tangan di bawah ini, %s, bermaksud melamar posisi %s di perusahaan Bapak/Ibu. Saya memiliki keahlian dalam %s yang saya yakin akan bermanfaat bagi perusahaan.
+
+Besar harapan saya untuk dapat bergabung dan memberikan kontribusi terbaik.
+
+Hormat saya,
+%s`,
+
+		`Kepada Yth. Tim Rekrutmen %s,
+
+Perkenalkan, saya %s. Dengan ini saya menyatakan minat saya untuk melamar posisi %s. Saya memiliki kemampuan di bidang %s yang telah saya kembangkan dan saya percaya sangat relevan dengan kebutuhan posisi ini.
+
+Saya sangat menantikan kesempatan wawancara untuk mendiskusikan kontribusi saya lebih lanjut.
+
+Salam hormat,
+%s`,
+
+		`Halo Tim %s,
+
+Nama saya %s dan saya ingin mengajukan lamaran sebagai %s di perusahaan Anda. Dengan keahlian saya di bidang %s, saya yakin dapat menjalankan tanggung jawab tersebut dengan baik dan memberikan nilai tambah.
+
+Terima kasih atas waktu dan perhatiannya.
+
+Hormat saya,
+%s`,
+
+		`Kepada HRD %s yang saya hormati,
+
+Saya, %s, sangat tertarik dengan posisi %s yang sedang dibuka di perusahaan Bapak/Ibu. Saya memiliki pengalaman dan keahlian dalam %s yang sangat relevan dan siap untuk mendukung kinerja tim Anda.
+
+Saya siap untuk mengikuti tahap seleksi lebih lanjut.
+
+Hormat saya,
+%s`,
+
+		`Yth. Manajer Perekrutan %s,
+
+Nama saya %s dan saya ingin mengajukan lamaran untuk posisi %s. Dengan keahlian saya dalam %s, saya yakin dapat memberikan kontribusi positif dan solusi yang kreatif bagi perusahaan Anda.
+
+Saya berharap dapat berdiskusi lebih lanjut melalui wawancara.
+
+Hormat saya,
+%s`,
+
+		`Kepada %s Recruitment Team,
+
+Saya, %s, bermaksud melamar posisi %s. Saya memiliki latar belakang dan keterampilan dalam bidang %s yang sesuai dengan kebutuhan posisi tersebut, dan saya antusias untuk dapat berkolaborasi.
+
+Saya sangat antusias dengan peluang untuk bergabung dan berkembang bersama perusahaan Anda.
+
+Terima kasih,
+%s`,
+
+		`Yth. HRD %s,
+
+Salam sejahtera,
+
+Perkenalkan, saya %s. Saya sangat tertarik untuk melamar sebagai %s. Keahlian saya dalam %s menjadikan saya kandidat yang siap berkontribusi secara optimal dan membawa dampak positif.
+
+Besar harapan saya untuk dapat bergabung dengan perusahaan Anda.
+
+Hormat saya,
+%s`,
+
+		`Kepada Tim %s,
+
+Saya adalah %s dan saya ingin melamar posisi %s. Keahlian saya di bidang %s telah terbukti dalam beberapa proyek sebelumnya, dan saya yakin dapat membawa nilai tambah yang signifikan bagi perusahaan Anda.
+
+Saya bersedia mengikuti seleksi sesuai ketentuan perusahaan.
+
+Terima kasih,
+%s`,
+
+		`Yth. Bagian Rekrutmen %s,
+
+Saya, %s, tertarik dengan posisi %s yang ditawarkan oleh perusahaan Anda. Keahlian saya dalam %s sangat relevan dengan tanggung jawab pekerjaan tersebut dan saya siap belajar hal baru.
+
+Saya siap memberikan yang terbaik jika diberikan kesempatan.
+
+Salam hormat,
+%s`,
+	}
+
+	indeks := rand.Intn(len(templateList))
+	return fmt.Sprintf(templateList[indeks], namaPerusahaan, namaPelamar, posisi, keahlian, namaPelamar)
+}
+
 // fungsi sebagai pembersih tampilan terminal
 func clearScreen() {
 	var cmd *exec.Cmd
