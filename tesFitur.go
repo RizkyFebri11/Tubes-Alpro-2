@@ -47,17 +47,17 @@ func main() {
 // landing page awal
 func landingPage() {
 	clearScreen()
-	fmt.Println("---------------------------------")
+	fmt.Println("===================================")
 	fmt.Println(" Aplikasi Pembuat Resume & Lamaran ")
-	fmt.Println("---------------------------------")
-	fmt.Println("1. Daftar Akun Baru")
-	fmt.Println("2. Masuk ke Aplikasi")
+	fmt.Println("===================================")
+	fmt.Println("1. Register")
+	fmt.Println("2. Login")
 	fmt.Println("3. Keluar")
-	fmt.Println("---------------------------------")
+	fmt.Println("===================================")
 	fmt.Print("Pilih opsi: ")
 
 	var choice int
-	_, err := fmt.Scanln(&choice) // Menggunakan Scanln
+	_, err := fmt.Scanln(&choice)
 	if err != nil {
 		fmt.Println("Input tidak valid. Harap masukkan angka (1-3).")
 		pressEnterToContinue()
