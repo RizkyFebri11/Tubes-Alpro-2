@@ -316,43 +316,104 @@ func cariResume() {
 }
 
 // mengedit data "TampilData" yang dibuat melalui "GenerateSuratTemplate" melalui "ID"
-func EditData() {
+func editResume() {
 	clearScreen()
-	var id int
-	fmt.Print("Masukkan ID yang ingin diedit: ")
-	fmt.Scanln(&id)
+	if len(dataResume) == 0 {
+		fmt.Println("Belum ada data resume yang tersimpan untuk diedit.")
+		return
+	}
 
+	var id int
+	fmt.Print("Masukkan ID resume yang ingin diedit: ")
+	_, err := fmt.Scanln(&id)
+	if err != nil {
+		fmt.Println("Input ID tidak valid. Harap masukkan angka.")
+		return
+	}
 	indeks := -1
-	for i := 0; i < jumlahData; i++ {
-		if dataResume[i].ID == id {
+	for i, r := range dataResume {
+		if r.ID == id {
 			indeks = i
 			break
 		}
 	}
-
 	if indeks == -1 {
-		fmt.Println("ID tidak ditemukan.")
+		fmt.Println("ID resume tidak ditemukan.")
 		return
 	}
 
-	fmt.Print("Nama baru: ")
-	fmt.Scanln(&dataResume[indeks].Nama)
-	fmt.Print("Email baru: ")
-	fmt.Scanln(&dataResume[indeks].Email)
-	fmt.Print("Nomor HP baru: ")
-	fmt.Scanln(&dataResume[indeks].NomorHP)
-	fmt.Print("Pendidikan baru: ")
-	fmt.Scanln(&dataResume[indeks].Pendidikan)
-	fmt.Print("Pengalaman baru: ")
-	fmt.Scanln(&dataResume[indeks].Pengalaman)
-	fmt.Print("Keahlian baru: ")
-	fmt.Scanln(&dataResume[indeks].Keahlian)
-	fmt.Print("Posisi yang dilamar: ")
-	var posisi string
-	fmt.Scanln(&posisi)
+	reader := bufio.NewReader(os.Stdin)
+	var input string
 
-	dataResume[indeks].SuratLamaran = GenerateSuratTemplate(dataResume[indeks].Nama, posisi, dataResume[indeks].Keahlian)
-	fmt.Println("Data berhasil diedit.")
+	fmt.Println("\n--- Edit Data Resume ---")
+	fmt.Printf("Nama lama: %s\n", dataResume[indeks].Nama)
+	fmt.Print("Nama baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].Nama = input
+	}
+
+	fmt.Printf("Email lama: %s\n", dataResume[indeks].Email)
+	fmt.Print("Email baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].Email = input
+	}
+
+	fmt.Printf("Nomor HP lama: %s\n", dataResume[indeks].NomorHP)
+	fmt.Print("Nomor HP baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].NomorHP = input
+	}
+
+	fmt.Printf("Pendidikan lama: %s\n", dataResume[indeks].Pendidikan)
+	fmt.Print("Pendidikan baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].Pendidikan = input
+	}
+
+	fmt.Printf("Pengalaman lama: %s\n", dataResume[indeks].Pengalaman)
+	fmt.Print("Pengalaman baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].Pengalaman = input
+	}
+
+	fmt.Printf("Keahlian lama: %s\n", dataResume[indeks].Keahlian)
+	fmt.Print("Keahlian baru (kosongkan jika tidak diubah): ")
+	inputBytes, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(inputBytes)
+	if input != "" {
+		dataResume[indeks].Keahlian = input
+	}
+
+	fmt.Printf("Posisi dilamar lama: %s\n", dataResume[indeks].PosisiDilamar)
+	fmt.Print("Posisi yang dilamar baru (kosongkan jika tidak diubah): ")
+	var posisiBaru string
+	posisiBaruBytes, _ := reader.ReadString('\n')
+	posisiBaru = strings.TrimSpace(posisiBaruBytes)
+	if posisiBaru != "" {
+		dataResume[indeks].PosisiDilamar = posisiBaru
+	}
+
+	fmt.Print("Nama Perusahaan (untuk regenerate surat lamaran, kosongkan jika tidak diubah): ")
+	var namaPerusahaan string
+	namaPerusahaanBytes, _ := reader.ReadString('\n')
+	namaPerusahaan = strings.TrimSpace(namaPerusahaanBytes)
+
+	if namaPerusahaan != "" || posisiBaru != "" || input != "" {
+		dataResume[indeks].SuratLamaran = generateSuratTemplate(namaPerusahaan, dataResume[indeks].Nama, dataResume[indeks].PosisiDilamar, dataResume[indeks].Keahlian)
+		fmt.Println("Surat lamaran berhasil diupdate berdasarkan perubahan.")
+	}
+
+	fmt.Println("Data resume berhasil diedit.")
 }
 
 // mmenghapus data dari fungsi "TampilData" memalui value "ID"
