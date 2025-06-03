@@ -248,15 +248,25 @@ func tambahResume() {
 }
 
 // menampilkan data hasil inputan dari "TambahResume" yang nanti akan digenerate oleh "GenerateSuratTemplate"
-func TampilData() {
-	fmt.Println("\n======= DAFTAR RESUME =======")
-	for i := 0; i < jumlahData; i++ {
-		r := dataResume[i]
-		fmt.Printf("ID: %d\nNama: %s\nEmail: %s\nNo HP: %s\nPendidikan: %s\nPengalaman: %s\nKeahlian: %s\nSurat Lamaran:\n%s\n-----------------------------\n",
-			r.ID, r.Nama, r.Email, r.NomorHP, r.Pendidikan, r.Pengalaman, r.Keahlian, r.SuratLamaran)
+func tampilkanSemuaResume() {
+	clearScreen()
+	fmt.Println("\n======= DAFTAR SEMUA RESUME =======")
+	if len(dataResume) == 0 {
+		fmt.Println("Belum ada data resume yang tersimpan.")
+		return
 	}
-	if jumlahData == 0 {
-		fmt.Println("Belum ada data.")
+
+	for _, r := range dataResume {
+		fmt.Printf("ID: %d\n", r.ID)
+		fmt.Printf("Nama: %s\n", r.Nama)
+		fmt.Printf("Email: %s\n", r.Email)
+		fmt.Printf("No HP: %s\n", r.NomorHP)
+		fmt.Printf("Pendidikan: %s\n", r.Pendidikan)
+		fmt.Printf("Pengalaman: %s\n", r.Pengalaman)
+		fmt.Printf("Keahlian: %s\n", r.Keahlian)
+		fmt.Printf("Posisi Dilamar: %s\n", r.PosisiDilamar)
+		fmt.Printf("Surat Lamaran:\n%s\n", r.SuratLamaran)
+		fmt.Println("======================================")
 	}
 }
 
