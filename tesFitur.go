@@ -1,5 +1,3 @@
-package main
-
 // Kode dibuat oleh Rizky Febriyanto dan Orlando Silas Davinci Kambu IF-48-07
 
 /*
@@ -7,6 +5,8 @@ package main
 "os/exec" & "runtime" sebagai fungsi dari clearscreen
 "strings" buat struktur sebuah string yang terikat dengan array (digunakan untuk search dan sort)
 */
+
+package main
 import (
 	"fmt"
 	"math/rand"
@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-const MAX = 100
+const NMAX = 100
 
 type User struct {
 	Username string
@@ -25,22 +25,22 @@ type User struct {
 }
 
 type Resume struct {
-	ID           int
-	Nama         string
-	Email        string
-	NomorHP      string
-	Pendidikan   string
-	Pengalaman   string
-	Keahlian     string
-	SuratLamaran string
+	ID            int
+	Nama          string
+	Email         string
+	NomorHP       string
+	Pendidikan    string
+	Pengalaman    string
+	Keahlian      string
+	PosisiDilamar string
+	SuratLamaran  string
 }
 
 var users []User
-var dataResume [MAX]Resume
-var jumlahData int
-var pilihan int
+var dataResume []Resume
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	landingPage()
 }
 
