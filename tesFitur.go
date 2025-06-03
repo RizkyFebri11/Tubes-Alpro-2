@@ -197,131 +197,54 @@ func login() {
 	landingPage()
 }
 
-// kumpulan template surat lamaran yang nanti akan diinput oleh fungsi "TambahResume"
-func GenerateSuratTemplate(nama, posisi, keahlian string) string {
-	var templateList = [9]string{
-		`Yth. HRD %s,
-
-Dengan hormat,
-
-Saya yang bertanda tangan di bawah ini, %s, bermaksud melamar posisi %s di perusahaan Anda. Saya memiliki keahlian dalam %s yang saya yakin akan bermanfaat bagi perusahaan.
-
-Saya berharap dapat diberikan kesempatan untuk menunjukkan kompetensi saya lebih lanjut.
-
-Hormat saya,
-%s`,
-
-		`Kepada Yth. Tim Rekrutmen %s,
-
-Perkenalkan, saya %s. Dengan ini saya menyatakan minat saya untuk melamar posisi %s. Saya memiliki kemampuan di bidang %s yang telah saya kembangkan selama beberapa waktu.
-
-Saya sangat menantikan kesempatan wawancara untuk mendiskusikan kontribusi saya.
-
-Salam hormat,
-%s`,
-
-		`Halo %s,
-
-Nama saya %s dan saya ingin melamar sebagai %s di perusahaan Anda. Keahlian saya di bidang %s membuat saya percaya diri untuk menjalankan tanggung jawab tersebut dengan baik.
-
-Terima kasih atas perhatian Anda.
-
-Hormat saya,
-%s`,
-
-		`Kepada HRD %s yang saya hormati,
-
-Saya, %s, tertarik untuk mengisi posisi %s yang sedang dibuka. Saya memiliki pengalaman dan keahlian dalam %s yang dapat mendukung kinerja tim Anda.
-
-Saya siap untuk mengikuti tahap seleksi lebih lanjut sesuai prosedur perusahaan.
-
-Hormat saya,
-%s`,
-
-		`Yth. Manajer Perekrutan %s,
-
-Nama saya %s dan saya ingin mengajukan lamaran untuk posisi %s. Dengan keahlian saya dalam %s, saya yakin dapat memberikan kontribusi positif dan solusi yang kreatif bagi perusahaan Anda.
-
-Saya berharap dapat berdiskusi lebih lanjut melalui wawancara.
-
-Hormat saya,
-%s`,
-
-		`Kepada %s Recruitment Team,
-
-Saya, %s, bermaksud melamar posisi %s. Saya memiliki latar belakang dan keterampilan dalam bidang %s yang sesuai dengan kebutuhan posisi tersebut.
-
-Saya sangat antusias dengan peluang untuk bergabung dan berkembang bersama perusahaan Anda.
-
-Terima kasih,
-%s`,
-
-		`Yth. HRD %s,
-
-Salam sejahtera,
-
-Perkenalkan, saya %s. Saya sangat tertarik untuk melamar sebagai %s. Keahlian saya dalam %s menjadikan saya kandidat yang siap berkontribusi secara optimal.
-
-Besar harapan saya untuk dapat bergabung dengan perusahaan Anda.
-
-Hormat saya,
-%s`,
-
-		`Kepada Tim %s,
-
-Saya adalah %s dan saya ingin melamar posisi %s. Keahlian saya di bidang %s telah terbukti dalam beberapa proyek sebelumnya, dan saya yakin dapat membawa nilai tambah.
-
-Saya bersedia mengikuti seleksi sesuai ketentuan perusahaan.
-
-Terima kasih,
-%s`,
-
-		`Yth. Bagian Rekrutmen %s,
-
-Saya, %s, tertarik dengan posisi %s yang ditawarkan oleh perusahaan Anda. Keahlian saya dalam %s sangat relevan dengan tanggung jawab pekerjaan tersebut.
-
-Saya siap memberikan yang terbaik jika diberikan kesempatan.
-
-Salam hormat,
-%s`,
-	}
-
-	// Inisialisasi random
-	rand.Seed(time.Now().UnixNano())
-	indeks := rand.Intn(len(templateList))
-	return fmt.Sprintf(templateList[indeks], posisi, nama, posisi, keahlian, nama)
-}
-
-func TambahResume() {
-	if jumlahData >= MAX {
-		fmt.Println("Data penuh, tidak bisa menambah resume baru.")
+func tambahResume() {
+	if len(dataResume) >= NMAX { // Diubah dari MAX_RESUMES ke NMAX
+		fmt.Println("Maaf, penyimpanan resume sudah penuh. Anda tidak bisa menambah data baru.")
 		return
 	}
 
+	reader := bufio.NewReader(os.Stdin)
+
 	var r Resume
-	r.ID = jumlahData + 1
+	r.ID = len(dataResume) + 1
 
-	fmt.Print("Nama: ")
-	fmt.Scanln(&r.Nama)
+	fmt.Println("\n--- Buat Resume Baru ---")
+	fmt.Print("Nama Lengkap: ")
+	namaLengkap, _ := reader.ReadString('\n')
+	r.Nama = strings.TrimSpace(namaLengkap)
+
 	fmt.Print("Email: ")
-	fmt.Scanln(&r.Email)
+	email, _ := reader.ReadString('\n')
+	r.Email = strings.TrimSpace(email)
+
 	fmt.Print("Nomor HP: ")
-	fmt.Scanln(&r.NomorHP)
-	fmt.Print("Pendidikan: ")
-	fmt.Scanln(&r.Pendidikan)
-	fmt.Print("Pengalaman: ")
-	fmt.Scanln(&r.Pengalaman)
-	fmt.Print("Keahlian: ")
-	fmt.Scanln(&r.Keahlian)
+	nomorHP, _ := reader.ReadString('\n')
+	r.NomorHP = strings.TrimSpace(nomorHP)
+
+	fmt.Print("Pendidikan Terakhir: ")
+	pendidikan, _ := reader.ReadString('\n')
+	r.Pendidikan = strings.TrimSpace(pendidikan)
+
+	fmt.Print("Pengalaman Kerja (pisahkan dengan koma jika lebih dari satu): ")
+	pengalaman, _ := reader.ReadString('\n')
+	r.Pengalaman = strings.TrimSpace(pengalaman)
+
+	fmt.Print("Keahlian (pisahkan dengan koma jika lebih dari satu): ")
+	keahlian, _ := reader.ReadString('\n')
+	r.Keahlian = strings.TrimSpace(keahlian)
+
 	fmt.Print("Posisi yang dilamar: ")
-	var posisi string
-	fmt.Scanln(&posisi)
+	posisiDilamar, _ := reader.ReadString('\n')
+	r.PosisiDilamar = strings.TrimSpace(posisiDilamar)
 
-	r.SuratLamaran = GenerateSuratTemplate(r.Nama, posisi, r.Keahlian)
+	fmt.Print("Nama Perusahaan yang dilamar: ")
+	namaPerusahaan, _ := reader.ReadString('\n')
+	namaPerusahaan = strings.TrimSpace(namaPerusahaan)
 
-	dataResume[jumlahData] = r
-	jumlahData++
-	fmt.Println("Resume berhasil dibuat!")
+	r.SuratLamaran = generateSuratTemplate(namaPerusahaan, r.Nama, r.PosisiDilamar, r.Keahlian)
+
+	dataResume = append(dataResume, r)
+	fmt.Println("\nResume berhasil dibuat dan surat lamaran otomatis tergenerasi!")
 }
 
 // menampilkan data hasil inputan dari "TambahResume" yang nanti akan digenerate oleh "GenerateSuratTemplate"
