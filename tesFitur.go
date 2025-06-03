@@ -91,11 +91,11 @@ func mainMenu() {
 		fmt.Println("5. Hapus Data Resume")
 		fmt.Println("6. Urutkan Resume Menaik (A-Z)")
 		fmt.Println("7. Urutkan Resume Menurun (Z-A)")
-		fmt.Println("8. Keluar")
+		fmt.Println("8. Keluar ke Menu Awal")
 		fmt.Print("Pilih menu: ")
 
 		var choice string
-		_, err := fmt.Scanln(&choice) // Menggunakan Scanln untuk membaca pilihan
+		_, err := fmt.Scanln(&choice)
 		if err != nil {
 			fmt.Println("Input tidak valid. Silakan coba lagi.")
 			pressEnterToContinue()
@@ -121,7 +121,8 @@ func mainMenu() {
 			fmt.Println("\nData resume berhasil diurutkan secara menurun (Z-A) berdasarkan nama.")
 		case "8":
 			fmt.Println("Anda telah keluar dari menu utama.")
-			return
+			pressEnterToContinue()
+			landingPage()
 		default:
 			fmt.Println("Pilihan tidak valid. Silakan coba lagi.")
 		}
