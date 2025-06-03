@@ -271,14 +271,14 @@ func tampilkanSemuaResume() {
 }
 
 // fungsi pencarian menggunakan model Binary Search
-func BinarySearch(nama string) int {
-	clearScreen()
-	low, high := 0, jumlahData-1
+func binarySearch(nama string) int {
+	low, high := 0, len(dataResume)-1
+
 	for low <= high {
 		mid := (low + high) / 2
-		if strings.EqualFold(dataResume[mid].Nama, nama) {
+		if dataResume[mid].Nama == nama {
 			return mid
-		} else if strings.ToLower(nama) < strings.ToLower(dataResume[mid].Nama) {
+		} else if nama < dataResume[mid].Nama {
 			high = mid - 1
 		} else {
 			low = mid + 1
@@ -286,6 +286,7 @@ func BinarySearch(nama string) int {
 	}
 	return -1
 }
+
 
 // mencari data dari "dataResume" dengan string yang tersimpan
 func cariResume() {
