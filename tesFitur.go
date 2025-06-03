@@ -135,9 +135,9 @@ func register() {
 	clearScreen()
 	var username, password string
 
-	fmt.Println("-----------------------")
+	fmt.Println("=======================")
 	fmt.Println(" Daftar Akun Baru ")
-	fmt.Println("-----------------------")
+	fmt.Println("=======================")
 	fmt.Print("Masukkan Username: ")
 	fmt.Scanln(&username)
 	if username == "" {
@@ -160,7 +160,7 @@ func register() {
 		if user.Username == username {
 			fmt.Println("\nUsername ini sudah dipakai. Silakan pilih username lain.")
 			pressEnterToContinue()
-			landingPage() // Kembali ke halaman utama
+			landingPage()
 			return
 		}
 	}
@@ -171,13 +171,13 @@ func register() {
 	landingPage()
 }
 
-// fungsi login pengguna
+// Login Pengguna
 func login() {
 	var inputUsn, inputPass string
 	clearScreen()
-	fmt.Println("-----------------------")
+	fmt.Println("=======================")
 	fmt.Println(" Masuk Aplikasi ")
-	fmt.Println("-----------------------")
+	fmt.Println("=======================")
 	fmt.Print("Username: ")
 	fmt.Scanln(&inputUsn)
 	fmt.Print("Password: ")
