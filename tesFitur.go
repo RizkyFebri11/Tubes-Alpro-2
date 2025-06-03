@@ -72,6 +72,7 @@ func landingPage() {
 		login()
 	case 3:
 		fmt.Println("Terima kasih sudah menggunakan aplikasi ini!")
+		return
 	default:
 		fmt.Println("Pilihan tidak ada. Silakan masukkan angka 1, 2, atau 3.")
 		pressEnterToContinue()
