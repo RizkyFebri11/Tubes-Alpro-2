@@ -288,20 +288,30 @@ func BinarySearch(nama string) int {
 }
 
 // mencari data dari "dataResume" dengan string yang tersimpan
-func CariData() {
+func cariResume() {
+	if len(dataResume) == 0 {
+		fmt.Println("Belum ada data untuk dicari.")
+		return
+	}
+
+	urutkanResumeAscending()
+
 	clearScreen()
-	UrutkanDataAsc()
-	var nama string
+	var namaCari string
 	fmt.Print("Masukkan nama yang dicari: ")
-	fmt.Scanln(&nama)
-	indeks := BinarySearch(nama)
+	reader := bufio.NewReader(os.Stdin)
+	namaCariInput, _ := reader.ReadString('\n')
+	namaCari = strings.TrimSpace(namaCariInput)
+
+	indeks := binarySearch(namaCari)
 
 	if indeks != -1 {
 		r := dataResume[indeks]
-		fmt.Printf("\nID: %d\nNama: %s\nEmail: %s\nNo HP: %s\nPendidikan: %s\nPengalaman: %s\nKeahlian: %s\nSurat Lamaran:\n%s\n",
-			r.ID, r.Nama, r.Email, r.NomorHP, r.Pendidikan, r.Pengalaman, r.Keahlian, r.SuratLamaran)
+		fmt.Println("\n--- Data Ditemukan ---")
+		fmt.Printf("ID: %d\nNama: %s\nEmail: %s\nNo HP: %s\nPendidikan: %s\nPengalaman: %s\nKeahlian: %s\nPosisi Dilamar: %s\nSurat Lamaran:\n%s\n",
+			r.ID, r.Nama, r.Email, r.NomorHP, r.Pendidikan, r.Pengalaman, r.Keahlian, r.PosisiDilamar, r.SuratLamaran)
 	} else {
-		fmt.Println("Data tidak ditemukan.")
+		fmt.Println("Data tidak ditemukan. Pastikan nama yang Anda masukkan sudah benar.")
 	}
 }
 
