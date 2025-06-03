@@ -444,32 +444,38 @@ func HapusData() {
 }
 
 // urutan data dari terkecil ke terbesar
-func UrutkanDataAsc() {
-	clearScreen()
-	for i := 1; i < jumlahData; i++ {
-		temp := dataResume[i]
-		j := i - 1
-		for j >= 0 && strings.ToLower(dataResume[j].Nama) > strings.ToLower(temp.Nama) {
-			dataResume[j+1] = dataResume[j]
-			j--
+func urutkanResumeAscending() {
+	var i, pass int
+	var temp Resume
+
+	N := len(dataResume)
+
+	pass = 1
+	for pass < N {
+		i = pass
+		temp = dataResume[pass]
+
+		for i > 0 && strings.ToLower(temp.Nama) < strings.ToLower(dataResume[i-1].Nama) {
+			dataResume[i] = dataResume[i-1]
+			i = i - 1
 		}
-		dataResume[j+1] = temp
+		dataResume[i] = temp
+		pass = pass + 1
 	}
 }
 
-// urutaan data dari terbesar ke terkecil
-func UrutkanDataDesc() {
-	clearScreen()
-	for i := 0; i < jumlahData-1; i++ {
-		maxIdx := i
-		for j := i + 1; j < jumlahData; j++ {
-			if strings.ToLower(dataResume[j].Nama) > strings.ToLower(dataResume[maxIdx].Nama) {
-				maxIdx = j
+func urutkanResumeDescending() {
+	N := len(dataResume)
+	pass := 1
+	for pass < N {
+		idx := pass - 1
+		for i := pass; i < N; i++ {
+			if strings.ToLower(dataResume[i].Nama) > strings.ToLower(dataResume[idx].Nama) {
+				idx = i
 			}
 		}
-		if maxIdx != i {
-			dataResume[i], dataResume[maxIdx] = dataResume[maxIdx], dataResume[i]
-		}
+		dataResume[pass-1], dataResume[idx] = dataResume[idx], dataResume[pass-1]
+		pass++
 	}
 }
 
